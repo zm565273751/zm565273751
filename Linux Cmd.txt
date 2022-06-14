@@ -1,0 +1,57 @@
+cd
+pwd
+mkdir
+touch
+vi
+esc
+i
+:wq
+
+rosrun <package_name> <executable_file>
+mv my_scripts move_bb8_pkg
+cp move_bb8_square.py move_bb8_square_copy.py
+cp -r my_scripts/ my_scripts_copy/
+rm move_bb8_square_copy.py
+rm -r my_scripts_copy
+
+      -rw-r--r-- 1 user user 2257 Jul  5 08:07 move_bb8_square.py
+
+chmod +x move_bb8_square.py
+chmod g(u/g/r)+w(r/w/x) move_bb8_square.py
+chmod go-x move_bb8_square.py
+chmod 740 move_bb8_square.py
+
+ps faux | grep test_process
+kill PID
+
+
+using UnityEngine;
+using UnityStandardAssets.Vehicles.Car;
+
+namespace RosSharp.RosBridgeClient
+{
+    [RequireComponent(typeof(CarController))]
+    public class CAVCmdSubscriber : UnitySubscriber<MessageTypes.CavOprator.CAVCmd>
+    {
+        
+        private CarController m_Car; // the car controller we want to use
+
+        protected override void Start()
+        {
+            base.Topic = "/" + gameObject.name + "/cmd";
+            base.Start();
+            m_Car = GetComponent<CarController>();
+        }
+
+        protected override void ReceiveMessage(MessageTypes.CavOprator.CAVCmd message)
+        {
+            Debug.Log("aaa");
+            m_Car.Move(message.steering, message.accel, message.footbrake, message.handbrake);
+        }
+
+        private void FixedUpdate()
+        {
+            
+        }
+    }
+}
